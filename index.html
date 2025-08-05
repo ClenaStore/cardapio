@@ -67,6 +67,19 @@
       white-space: nowrap;
     }
 
+    .search-bar {
+      margin-left: 20px;
+      flex: 1;
+    }
+
+    .search-bar input {
+      width: 100%;
+      max-width: 300px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: none;
+    }
+
     header .account-button {
       margin-left: auto;
       background: #d4a253;
@@ -79,114 +92,54 @@
 
     .main {
       margin-left: 120px;
-      padding: 100px 20px 20px 20px; /* compensando o header */
+      padding: 100px 20px 20px 20px;
     }
 
-    .banner {
-      width: 100%;
-      height: 180px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    .content-section {
+      display: none;
     }
 
-    .banner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      top: 0;
-      left: 0;
-      transition: opacity 1s ease-in-out;
-      opacity: 0;
-    }
-
-    .banner img.active {
-      opacity: 1;
-    }
-
-    .menu-items {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-    }
-
-    .item {
-      background-color: #3b271a;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 6px rgba(0,0,0,0.6);
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .item:hover {
-      transform: scale(1.02);
-    }
-
-    .item img {
-      width: 100%;
-      height: 130px;
-      object-fit: cover;
-    }
-
-    .item .info {
-      padding: 12px;
-    }
-
-    .item .info h3 {
-      margin: 0 0 5px;
-      font-size: 1.05em;
-    }
-
-    .item .info p {
-      margin: 0;
-      font-size: 0.95em;
-    }
-
-    .stars {
-      color: gold;
-      margin-top: 6px;
+    .content-section.active {
+      display: block;
     }
   </style>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const links = document.querySelectorAll("nav a");
-      const main = document.querySelector(".main");
-
-      links.forEach(link => {
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          links.forEach(l => l.classList.remove("active"));
-          link.classList.add("active");
-
-          if (link.textContent.includes("Cardápio")) {
-            fetch("cardapio.html")
-              .then(res => res.text())
-              .then(html => {
-                main.innerHTML = html;
-              });
-          }
-        });
+    function showSection(id) {
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
       });
-    });
+      document.querySelector(`#${id}`).classList.add('active');
+
+      document.querySelectorAll('nav a').forEach(link => {
+        link.classList.remove('active');
+      });
+
+      const navLinks = document.querySelectorAll('nav a');
+      navLinks.forEach(link => {
+        const linkText = link.textContent.toLowerCase();
+        if (linkText.includes(id)) {
+          link.classList.add('active');
+        }
+      });
+    }
   </script>
 </head>
 <body>
   <nav>
-    <a href="#" class="active">🏠 Início</a>
-    <a href="#">🍽️ Cardápio</a>
-    <a href="#">🔥 Ofertas</a>
-    <a href="#">📍 Sobre</a>
-    <a href="#">📊 Pontos</a>
-    <a href="#">⭐ Avalie</a>
+    <a href="#" onclick="showSection('inicio')" class="active">🏠 Início</a>
+    <a href="#" onclick="showSection('cardapio')">🍽️ Cardápio</a>
+    <a href="#" onclick="showSection('ofertas')">🔥 Ofertas</a>
+    <a href="#" onclick="showSection('sobre')">📍 Sobre</a>
+    <a href="#" onclick="showSection('pontos')">📊 Pontos</a>
+    <a href="#" onclick="showSection('avalie')">⭐ Avalie</a>
   </nav>
 
   <header>
     <img class="logo" src="https://raw.githubusercontent.com/ClenaStore/painel-principal/main/img/logo-cb-systems.png" alt="Logo">
     <h1>Cardápio Digital</h1>
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar...">
+    </div>
     <button class="account-button">MINHA CONTA</button>
   </header>
 
