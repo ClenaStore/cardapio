@@ -60,6 +60,14 @@
       margin: 10px 0;
       display: block;
       font-size: 0.9em;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+
+    nav a.active {
+      background-color: orange;
+      color: black;
+      font-weight: bold;
     }
 
     .main {
@@ -69,7 +77,7 @@
 
     .banner {
       width: 100%;
-      height: 250px; /* altura reduzida */
+      height: 250px;
       border-radius: 8px;
       margin-bottom: 20px;
       position: relative;
@@ -90,106 +98,22 @@
     .banner img.active {
       opacity: 1;
     }
-
-    /* Exemplo para substituir imagem por vídeo:
-    .banner video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    */
-
-    .menu-items {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 15px;
-    }
-
-    .item {
-      background-color: #42210b;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 0 5px rgba(0,0,0,0.5);
-      cursor: pointer;
-    }
-
-    .item img {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-    }
-
-    .item .info {
-      padding: 10px;
-    }
-
-    .item .info h3 {
-      margin: 0 0 5px;
-      font-size: 1em;
-    }
-
-    .item .info p {
-      margin: 0;
-      font-size: 0.9em;
-    }
-
-    .stars {
-      color: gold;
-      margin-top: 5px;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      background: #42210b;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 300px;
-      text-align: center;
-      position: relative;
-    }
-
-    .modal img {
-      width: 100%;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      color: white;
-      font-size: 2em;
-      cursor: pointer;
-    }
-
-    .rating-stars span {
-      font-size: 1.5em;
-      cursor: pointer;
-      color: #ccc;
-    }
-
-    .rating-stars span.hover,
-    .rating-stars span.selected {
-      color: gold;
-    }
   </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll("nav a");
+      links.forEach(link => {
+        link.addEventListener("click", () => {
+          links.forEach(l => l.classList.remove("active"));
+          link.classList.add("active");
+        });
+      });
+    });
+  </script>
 </head>
 <body>
   <nav>
-    <a href="#">⭐ Destaques</a>
+    <a href="#" class="active">🏠 Início</a>
     <a href="#">🍽️ Cardápio</a>
     <a href="#">🔥 Ofertas</a>
     <a href="#">📍 Sobre</a>
@@ -202,6 +126,7 @@
     <h1>Cardápio Digital</h1>
     <button class="account-button">MINHA CONTA</button>
   </header>
+
 <div class="main">
     <div class="banner">
       <img class="active" src="https://github.com/ClenaStore/painel-principal/blob/main/img/Design%20sem%20nome%20(14).png?raw=true" alt="Banner 1">
