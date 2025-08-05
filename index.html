@@ -149,10 +149,21 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const links = document.querySelectorAll("nav a");
+      const main = document.querySelector(".main");
+
       links.forEach(link => {
-        link.addEventListener("click", () => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
           links.forEach(l => l.classList.remove("active"));
           link.classList.add("active");
+
+          if (link.textContent.includes("Cardápio")) {
+            fetch("cardapio.html")
+              .then(res => res.text())
+              .then(html => {
+                main.innerHTML = html;
+              });
+          }
         });
       });
     });
@@ -178,7 +189,6 @@
     <div class="banner">
       <img class="active" src="https://source.unsplash.com/1280x250/?restaurant,interior" alt="Banner 1">
     </div>
-
     <div class="menu-items">
       <div class="item">
         <img src="https://source.unsplash.com/300x200/?burger" alt="Papa Green">
