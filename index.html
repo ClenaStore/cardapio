@@ -62,6 +62,7 @@
       font-size: 0.9em;
       padding: 5px 10px;
       border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     nav a.active {
@@ -77,7 +78,7 @@
 
     .banner {
       width: 100%;
-      height: 250px;
+      height: 180px;
       border-radius: 8px;
       margin-bottom: 20px;
       position: relative;
@@ -97,6 +98,45 @@
 
     .banner img.active {
       opacity: 1;
+    }
+
+    .menu-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 15px;
+    }
+
+    .item {
+      background-color: #42210b;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      cursor: pointer;
+    }
+
+    .item img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+
+    .item .info {
+      padding: 10px;
+    }
+
+    .item .info h3 {
+      margin: 0 0 5px;
+      font-size: 1em;
+    }
+
+    .item .info p {
+      margin: 0;
+      font-size: 0.9em;
+    }
+
+    .stars {
+      color: gold;
+      margin-top: 5px;
     }
   </style>
   <script>
@@ -127,52 +167,43 @@
     <button class="account-button">MINHA CONTA</button>
   </header>
 
-<div class="main">
+  <div class="main">
     <div class="banner">
-      <img class="active" src="https://github.com/ClenaStore/painel-principal/blob/main/img/Design%20sem%20nome%20(14).png?raw=true" alt="Banner 1">
-      <!-- Exemplo de substituição:
+      <img class="active" src="https://via.placeholder.com/1280x250?text=Banner+1" alt="Banner 1">
+      <!-- Exemplo de substituição por vídeo:
       <video autoplay loop muted>
         <source src="video.mp4" type="video/mp4">
       </video>
       -->
-      <img src="https://github.com/ClenaStore/painel-principal/blob/main/img/Design%20sem%20nome%20(14).png?raw=true">
-      <img src="https://github.com/ClenaStore/painel-principal/blob/main/img/Design%20sem%20nome%20(14).png?raw=true">
-      <img src="https://source.unsplash.com/800x400/?food,4">
-      <img src="https://source.unsplash.com/800x400/?food,5">
-      <img src="https://source.unsplash.com/800x400/?food,6">
-      <img src="https://source.unsplash.com/800x400/?food,7">
-      <img src="https://source.unsplash.com/800x400/?food,8">
-      <img src="https://source.unsplash.com/800x400/?food,9">
-      <img src="https://source.unsplash.com/800x400/?food,10">
     </div>
 
     <div class="menu-items">
-      <div class="item" onclick="openModal('Papa Green', 'https://github.com/ClenaStore/painel-principal/blob/main/img/CLENA.COM.BR.png?raw=true')">
-        <img src="https://github.com/ClenaStore/painel-principal/blob/main/img/CLENA.COM.BR.png?raw=true" alt="Papa Green">
+      <div class="item">
+        <img src="https://source.unsplash.com/300x200/?burger" alt="Papa Green">
         <div class="info">
           <h3>Papa Green</h3>
           <p>R$ 22,90</p>
           <div class="stars">⭐⭐⭐⭐☆</div>
         </div>
       </div>
-      <div class="item" onclick="openModal('Salmão do Papa', 'https://github.com/ClenaStore/painel-principal/blob/main/img/CLENA.COM.BR.png?raw=true')">
-        <img src="https://github.com/ClenaStore/painel-principal/blob/main/img/CLENA.COM.BR.png?raw=true" alt="Salmão do Papa">
+      <div class="item">
+        <img src="https://source.unsplash.com/300x200/?salmon" alt="Salmão do Papa">
         <div class="info">
           <h3>Salmão do Papa</h3>
           <p>R$ 22,90</p>
           <div class="stars">⭐⭐⭐⭐⭐</div>
         </div>
       </div>
-      <div class="item" onclick="openModal('Grand Gateau', 'https://github.com/ClenaStore/painel-principal/blob/main/img/CLENA.COM.BR.png?raw=true')">
-        <img src="https://github.com/ClenaStore/painel-principal/blob/main/img/CLENA.COM.BR.png?raw=true" alt="Grand Gateau">
+      <div class="item">
+        <img src="https://source.unsplash.com/300x200/?dessert" alt="Grand Gateau">
         <div class="info">
           <h3>Grand Gateau</h3>
           <p>R$ 22,90</p>
           <div class="stars">⭐⭐⭐⭐☆</div>
         </div>
       </div>
-      <div class="item" onclick="openModal('Caipirinha', 'https://github.com/ClenaStore/painel-principal/blob/main/img/CLENA.COM.BR.png?raw=true')">
-        <img src="https://github.com/ClenaStore/painel-principal/blob/main/img/CLENA.COM.BR.png?raw=true" alt="Caipirinha">
+      <div class="item">
+        <img src="https://source.unsplash.com/300x200/?drink" alt="Caipirinha">
         <div class="info">
           <h3>Caipirinha</h3>
           <p>R$ 14,00</p>
@@ -181,60 +212,5 @@
       </div>
     </div>
   </div>
-
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <img id="modal-img" src="">
-      <h3 id="modal-title"></h3>
-      <p>Avalie este prato:</p>
-      <div class="rating-stars" id="rating-stars">
-        <span data-value="1">★</span>
-        <span data-value="2">★</span>
-        <span data-value="3">★</span>
-        <span data-value="4">★</span>
-        <span data-value="5">★</span>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const banners = document.querySelectorAll('.banner img');
-    let currentBanner = 0;
-
-    setInterval(() => {
-      banners[currentBanner].classList.remove('active');
-      currentBanner = (currentBanner + 1) % banners.length;
-      banners[currentBanner].classList.add('active');
-    }, 4000);
-
-    function openModal(title, imgSrc) {
-      document.getElementById('modal-title').textContent = title;
-      document.getElementById('modal-img').src = imgSrc;
-      document.getElementById('modal').style.display = 'flex';
-    }
-
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
-
-    const stars = document.querySelectorAll('.rating-stars span');
-    stars.forEach(star => {
-      star.addEventListener('mouseover', function() {
-        const val = parseInt(this.getAttribute('data-value'));
-        stars.forEach(s => s.classList.remove('hover'));
-        for (let i = 0; i < val; i++) stars[i].classList.add('hover');
-      });
-      star.addEventListener('mouseout', () => {
-        stars.forEach(s => s.classList.remove('hover'));
-      });
-      star.addEventListener('click', function() {
-        const val = parseInt(this.getAttribute('data-value'));
-        stars.forEach(s => s.classList.remove('selected'));
-        for (let i = 0; i < val; i++) stars[i].classList.add('selected');
-        alert(`Você avaliou com ${val} estrela(s)!`);
-      });
-    });
-  </script>
 </body>
 </html>
