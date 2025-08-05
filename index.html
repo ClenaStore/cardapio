@@ -95,6 +95,75 @@
       padding: 100px 20px 20px 20px;
     }
 
+    .banner {
+      width: 100%;
+      height: 180px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    }
+
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: opacity 1s ease-in-out;
+      opacity: 0;
+    }
+
+    .banner img.active {
+      opacity: 1;
+    }
+
+    .menu-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .item {
+      background-color: #3b271a;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 6px rgba(0,0,0,0.6);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .item:hover {
+      transform: scale(1.02);
+    }
+
+    .item img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+    }
+
+    .item .info {
+      padding: 12px;
+    }
+
+    .item .info h3 {
+      margin: 0 0 5px;
+      font-size: 1.05em;
+    }
+
+    .item .info p {
+      margin: 0;
+      font-size: 0.95em;
+    }
+
+    .stars {
+      color: gold;
+      margin-top: 6px;
+    }
+
     .content-section {
       display: none;
     }
@@ -108,20 +177,29 @@
       document.querySelectorAll('.content-section').forEach(section => {
         section.classList.remove('active');
       });
-      document.querySelector(`#${id}`).classList.add('active');
+      const sectionToShow = document.getElementById(id);
+      sectionToShow.classList.add('active');
 
       document.querySelectorAll('nav a').forEach(link => {
         link.classList.remove('active');
       });
-
-      const navLinks = document.querySelectorAll('nav a');
-      navLinks.forEach(link => {
-        const linkText = link.textContent.toLowerCase();
-        if (linkText.includes(id)) {
-          link.classList.add('active');
-        }
+      document.querySelectorAll('nav a').forEach(link => {
+        const text = link.textContent.toLowerCase();
+        if (text.includes(id)) link.classList.add('active');
       });
+
+      if (id === 'cardapio') {
+        fetch('cardapio.html')
+          .then(res => res.text())
+          .then(html => {
+            sectionToShow.innerHTML = html;
+          });
+      }
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      showSection('inicio');
+    });
   </script>
 </head>
 <body>
@@ -147,39 +225,23 @@
     <div class="banner">
       <img class="active" src="https://source.unsplash.com/1280x250/?restaurant,interior" alt="Banner 1">
     </div>
-    <div class="menu-items">
-      <div class="item">
-        <img src="https://source.unsplash.com/300x200/?burger" alt="Papa Green">
-        <div class="info">
-          <h3>Papa Green</h3>
-          <p>R$ 22,90</p>
-          <div class="stars">⭐⭐⭐⭐☆</div>
-        </div>
-      </div>
-      <div class="item">
-        <img src="https://source.unsplash.com/300x200/?salmon" alt="Salmão do Papa">
-        <div class="info">
-          <h3>Salmão do Papa</h3>
-          <p>R$ 22,90</p>
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-        </div>
-      </div>
-      <div class="item">
-        <img src="https://source.unsplash.com/300x200/?dessert" alt="Grand Gateau">
-        <div class="info">
-          <h3>Grand Gateau</h3>
-          <p>R$ 22,90</p>
-          <div class="stars">⭐⭐⭐⭐☆</div>
-        </div>
-      </div>
-      <div class="item">
-        <img src="https://source.unsplash.com/300x200/?drink" alt="Caipirinha">
-        <div class="info">
-          <h3>Caipirinha</h3>
-          <p>R$ 14,00</p>
-          <div class="stars">⭐⭐⭐⭐☆</div>
-        </div>
-      </div>
+    <div id="inicio" class="content-section active">
+      <p>Conteúdo da tela inicial</p>
+    </div>
+    <div id="cardapio" class="content-section">
+      <p>Conteúdo do cardápio será carregado aqui...</p>
+    </div>
+    <div id="ofertas" class="content-section">
+      <p>Ofertas disponíveis</p>
+    </div>
+    <div id="sobre" class="content-section">
+      <p>Informações sobre o restaurante</p>
+    </div>
+    <div id="pontos" class="content-section">
+      <p>Programa de pontos</p>
+    </div>
+    <div id="avalie" class="content-section">
+      <p>Área para avaliações</p>
     </div>
   </div>
 </body>
