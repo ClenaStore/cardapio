@@ -15,14 +15,29 @@
     header {
       background-color: #1a0e06;
       display: flex;
-      justify-content: space-between;
       align-items: center;
       padding: 10px 20px;
+      gap: 10px;
+    }
+
+    header img.logo {
+      height: 40px;
+      width: auto;
     }
 
     header h1 {
       margin: 0;
       font-size: 1.4em;
+      white-space: nowrap;
+    }
+
+    header .account-button {
+      margin-left: auto;
+      background: orange;
+      color: black;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
     }
 
     nav {
@@ -165,10 +180,9 @@
 </head>
 <body>
   <header>
-    <h1>🍔 Cardápio Digital</h1>
-    <div>
-      <button style="background: orange; color: black; border: none; padding: 8px 12px; border-radius: 6px;">MINHA CONTA</button>
-    </div>
+    <img class="logo" src="https://raw.githubusercontent.com/ClenaStore/painel-principal/main/img/logo-cb-systems.png" alt="Logo">
+    <h1>Cardápio Digital</h1>
+    <button class="account-button">MINHA CONTA</button>
   </header>
 
   <nav>
