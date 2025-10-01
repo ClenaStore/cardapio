@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cardápio Digital</title>
+
+  <!-- PWA Config -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2b1d14">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
   <style>
     body {
       margin: 0;
@@ -132,7 +141,7 @@
       margin-bottom: 20px;
       border-bottom: 2px solid #d4a253;
       position: sticky;
-      top: 70px; /* fica abaixo do header */
+      top: 70px; /* abaixo do header */
       background: #1f150f;
       z-index: 900;
     }
@@ -151,11 +160,6 @@
       background: #d4a253;
       color: #2b1d14;
       font-weight: bold;
-    }
-
-    .category-nav a:hover {
-      background: #d4a253;
-      color: #2b1d14;
     }
 
     .menu-category {
@@ -249,7 +253,7 @@
   </nav>
 
   <header>
-    <img class="logo" src="https://raw.githubusercontent.com/ClenaStore/painel-principal/main/img/logo-cb-systems.png" alt="Logo">
+    <img class="logo" src="icons/icon-192.png" alt="Logo">
     <h1>Cardápio Digital</h1>
     <div class="search-bar">
       <input type="text" placeholder="Buscar...">
@@ -317,15 +321,13 @@
       document.querySelectorAll('.content-section').forEach(section => {
         section.classList.remove('active');
       });
-      const sectionToShow = document.getElementById(id);
-      sectionToShow.classList.add('active');
+      document.getElementById(id).classList.add('active');
 
       document.querySelectorAll('nav a').forEach(link => {
         link.classList.remove('active');
       });
       document.querySelector(`nav a[onclick="showSection('${id}')"]`).classList.add('active');
 
-      // Animação ao abrir cardápio
       if (id === 'cardapio') {
         document.querySelectorAll('.item').forEach(el => el.classList.remove('show'));
         setTimeout(() => {
@@ -336,12 +338,11 @@
       }
     }
 
-    // Scroll suave + scrollspy
+    // Scrollspy categorias
     document.addEventListener("DOMContentLoaded", () => {
       const categoryLinks = document.querySelectorAll('.category-nav a');
       const sections = document.querySelectorAll('.menu-category');
 
-      // Scroll suave
       categoryLinks.forEach(link => {
         link.addEventListener('click', e => {
           e.preventDefault();
@@ -350,11 +351,10 @@
         });
       });
 
-      // Scrollspy (ativa categoria atual)
       window.addEventListener('scroll', () => {
         let current = "";
         sections.forEach(sec => {
-          const secTop = sec.offsetTop - 100;
+          const secTop = sec.offsetTop - 120;
           if (pageYOffset >= secTop) current = sec.getAttribute("id");
         });
 
@@ -365,6 +365,12 @@
           }
         });
       });
+
+      // PWA Service Worker
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("service-worker.js")
+          .then(() => console.log("Service Worker registrado"));
+      }
     });
   </script>
 </body>
