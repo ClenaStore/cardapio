@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cardápio Digital</title>
 
-  <!-- PWA Config -->
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#2b1d14">
   <meta name="mobile-web-app-capable" content="yes">
@@ -47,11 +47,6 @@
       transition: all 0.3s ease;
     }
 
-    nav a:hover {
-      background: #d4a253;
-      color: #2b1d14;
-    }
-
     nav a.active {
       background-color: #d4a253;
       color: #2b1d14;
@@ -71,20 +66,9 @@
       z-index: 1000;
     }
 
-    header img.logo {
-      height: 50px;
-      width: auto;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.5em;
-    }
-
-    .search-bar {
-      margin-left: 20px;
-      flex: 1;
-    }
+    header img.logo { height: 50px; width: auto; }
+    header h1 { margin: 0; font-size: 1.5em; }
+    .search-bar { margin-left: 20px; flex: 1; }
 
     .search-bar input {
       width: 100%;
@@ -94,7 +78,7 @@
       border: none;
     }
 
-    header .account-button {
+    .account-button {
       margin-left: auto;
       background: #d4a253;
       color: #2b1d14;
@@ -103,11 +87,6 @@
       border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    header .account-button:hover {
-      background: #c6923d;
     }
 
     .main {
@@ -120,130 +99,49 @@
       height: 200px;
       border-radius: 12px;
       margin-bottom: 20px;
-      position: relative;
       overflow: hidden;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
       animation: fadeIn 1s ease;
     }
 
-    .banner img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .banner img { width: 100%; height: 100%; object-fit: cover; }
 
-    /* Barra de categorias fixa */
-    .category-nav {
+    .content-section { display: none; }
+    .content-section.active { display: block; }
+
+    /* Bloqueio */
+    #overlayLock {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      color: #fff;
       display: flex;
-      gap: 15px;
-      overflow-x: auto;
-      padding: 10px 0;
-      margin-bottom: 20px;
-      border-bottom: 2px solid #d4a253;
-      position: sticky;
-      top: 70px; /* abaixo do header */
-      background: #1f150f;
-      z-index: 900;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 2000;
     }
 
-    .category-nav a {
-      color: #f5f5f5;
-      background: #3b271a;
-      padding: 8px 14px;
-      border-radius: 6px;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: background 0.3s;
-    }
-
-    .category-nav a.active {
+    #overlayLock button {
       background: #d4a253;
-      color: #2b1d14;
-      font-weight: bold;
-    }
-
-    .menu-category {
-      margin-top: 30px;
-      padding-top: 30px;
-    }
-
-    .menu-category h2 {
-      margin-bottom: 15px;
-      font-size: 1.4em;
-      border-left: 6px solid #d4a253;
-      padding-left: 10px;
-    }
-
-    .menu-items {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      transition: all 0.5s ease;
-    }
-
-    .item {
-      background-color: #3b271a;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 6px rgba(0,0,0,0.6);
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 1.2em;
+      margin-top: 20px;
       cursor: pointer;
-      transition: transform 0.3s ease, opacity 0.5s ease;
-      opacity: 0;
-      transform: translateY(30px);
     }
 
-    .item.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .item:hover {
-      transform: scale(1.05);
-    }
-
-    .item img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
-
-    .item .info {
-      padding: 12px;
-    }
-
-    .item .info h3 {
-      margin: 0 0 5px;
-      font-size: 1.05em;
-    }
-
-    .item .info p {
-      margin: 0;
-      font-size: 0.95em;
-    }
-
-    .stars {
-      color: gold;
-      margin-top: 6px;
-    }
-
-    .content-section {
-      display: none;
-      opacity: 0;
-      transition: opacity 0.6s ease;
-    }
-
-    .content-section.active {
-      display: block;
-      opacity: 1;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
   </style>
 </head>
 <body>
+  <!-- BLOQUEIO -->
+  <div id="overlayLock">
+    <h2>🔒 Acesso Restrito</h2>
+    <p>Toque abaixo para acessar o cardápio</p>
+    <button onclick="unlock()">MINHA CONTA</button>
+  </div>
+
   <nav>
     <a href="#" onclick="showSection('inicio')" class="active">🏠 Início</a>
     <a href="#" onclick="showSection('cardapio')">🍽️ Cardápio</a>
@@ -258,11 +156,10 @@
     <div class="search-bar">
       <input type="text" placeholder="Buscar...">
     </div>
-    <button class="account-button">MINHA CONTA</button>
+    <button class="account-button" onclick="lock()">SAIR</button>
   </header>
 
   <div class="main">
-    <!-- Início -->
     <div id="inicio" class="content-section active">
       <div class="banner">
         <img src="https://source.unsplash.com/1280x300/?restaurant" alt="Banner Principal">
@@ -271,107 +168,30 @@
       <p>Explore nossas opções deliciosas!</p>
     </div>
 
-    <!-- Cardápio -->
     <div id="cardapio" class="content-section">
-      <!-- Barra fixa -->
-      <div class="category-nav">
-        <a href="#cat-lanches">🍔 Lanches</a>
-        <a href="#cat-massas">🍝 Massas</a>
-        <a href="#cat-sobremesas">🍰 Sobremesas</a>
-        <a href="#cat-bebidas">🥤 Bebidas</a>
-      </div>
-
-      <div id="cat-lanches" class="menu-category">
-        <h2>🍔 Lanches</h2>
-        <div class="menu-items">
-          <div class="item"><img src="https://source.unsplash.com/400x300/?burger" alt=""><div class="info"><h3>X-Burger</h3><p>R$ 18,90</p><div class="stars">⭐⭐⭐⭐</div></div></div>
-          <div class="item"><img src="https://source.unsplash.com/400x300/?pizza" alt=""><div class="info"><h3>Pizza Calabresa</h3><p>R$ 32,00</p><div class="stars">⭐⭐⭐⭐⭐</div></div></div>
-          <div class="item"><img src="https://source.unsplash.com/400x300/?sandwich" alt=""><div class="info"><h3>Sanduíche Natural</h3><p>R$ 14,90</p><div class="stars">⭐⭐⭐</div></div></div>
-        </div>
-      </div>
-
-      <div id="cat-massas" class="menu-category">
-        <h2>🍝 Massas</h2>
-        <div class="menu-items">
-          <div class="item"><img src="https://source.unsplash.com/400x300/?pasta" alt=""><div class="info"><h3>Espaguete ao Sugo</h3><p>R$ 24,00</p><div class="stars">⭐⭐⭐⭐</div></div></div>
-          <div class="item"><img src="https://source.unsplash.com/400x300/?lasagna" alt=""><div class="info"><h3>Lasanha Bolonhesa</h3><p>R$ 29,00</p><div class="stars">⭐⭐⭐⭐⭐</div></div></div>
-        </div>
-      </div>
-
-      <div id="cat-sobremesas" class="menu-category">
-        <h2>🍰 Sobremesas</h2>
-        <div class="menu-items">
-          <div class="item"><img src="https://source.unsplash.com/400x300/?cake" alt=""><div class="info"><h3>Bolo de Chocolate</h3><p>R$ 12,00</p><div class="stars">⭐⭐⭐⭐</div></div></div>
-          <div class="item"><img src="https://source.unsplash.com/400x300/?icecream" alt=""><div class="info"><h3>Sorvete Artesanal</h3><p>R$ 10,00</p><div class="stars">⭐⭐⭐⭐⭐</div></div></div>
-        </div>
-      </div>
-
-      <div id="cat-bebidas" class="menu-category">
-        <h2>🥤 Bebidas</h2>
-        <div class="menu-items">
-          <div class="item"><img src="https://source.unsplash.com/400x300/?juice" alt=""><div class="info"><h3>Suco Natural</h3><p>R$ 8,00</p><div class="stars">⭐⭐⭐⭐</div></div></div>
-          <div class="item"><img src="https://source.unsplash.com/400x300/?coffee" alt=""><div class="info"><h3>Café Expresso</h3><p>R$ 6,00</p><div class="stars">⭐⭐⭐⭐⭐</div></div></div>
-        </div>
-      </div>
+      <h2>🍔 Lanches</h2>
+      <p>Itens do cardápio aqui...</p>
     </div>
   </div>
 
   <script>
     function showSection(id) {
-      document.querySelectorAll('.content-section').forEach(section => {
-        section.classList.remove('active');
-      });
+      document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-
-      document.querySelectorAll('nav a').forEach(link => {
-        link.classList.remove('active');
-      });
-      document.querySelector(`nav a[onclick="showSection('${id}')"]`).classList.add('active');
-
-      if (id === 'cardapio') {
-        document.querySelectorAll('.item').forEach(el => el.classList.remove('show'));
-        setTimeout(() => {
-          document.querySelectorAll('.item').forEach((el, index) => {
-            setTimeout(() => el.classList.add('show'), index * 120);
-          });
-        }, 100);
-      }
     }
 
-    // Scrollspy categorias
-    document.addEventListener("DOMContentLoaded", () => {
-      const categoryLinks = document.querySelectorAll('.category-nav a');
-      const sections = document.querySelectorAll('.menu-category');
+    // Bloqueio
+    function unlock() {
+      document.getElementById("overlayLock").style.display = "none";
+    }
+    function lock() {
+      document.getElementById("overlayLock").style.display = "flex";
+    }
 
-      categoryLinks.forEach(link => {
-        link.addEventListener('click', e => {
-          e.preventDefault();
-          const target = document.querySelector(link.getAttribute('href'));
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-      });
-
-      window.addEventListener('scroll', () => {
-        let current = "";
-        sections.forEach(sec => {
-          const secTop = sec.offsetTop - 120;
-          if (pageYOffset >= secTop) current = sec.getAttribute("id");
-        });
-
-        categoryLinks.forEach(link => {
-          link.classList.remove("active");
-          if (link.getAttribute("href") === "#" + current) {
-            link.classList.add("active");
-          }
-        });
-      });
-
-      // PWA Service Worker
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("service-worker.js")
-          .then(() => console.log("Service Worker registrado"));
-      }
-    });
+    // PWA Service Worker
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
   </script>
 </body>
 </html>
