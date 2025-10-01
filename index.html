@@ -10,6 +10,7 @@
       font-family: 'Segoe UI', sans-serif;
       background-color: #1f150f;
       color: #f5f5f5;
+      overflow-x: hidden;
     }
 
     nav {
@@ -29,12 +30,17 @@
     nav a {
       color: #f5f5f5;
       text-decoration: none;
-      margin: 10px 0;
+      margin: 8px 0;
       display: block;
       font-size: 0.95em;
-      padding: 6px 12px;
-      border-radius: 6px;
-      transition: background-color 0.3s, color 0.3s;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+      background: #d4a253;
+      color: #2b1d14;
     }
 
     nav a.active {
@@ -63,8 +69,7 @@
 
     header h1 {
       margin: 0;
-      font-size: 1.6em;
-      white-space: nowrap;
+      font-size: 1.5em;
     }
 
     .search-bar {
@@ -75,8 +80,8 @@
     .search-bar input {
       width: 100%;
       max-width: 300px;
-      padding: 6px 10px;
-      border-radius: 4px;
+      padding: 8px 12px;
+      border-radius: 6px;
       border: none;
     }
 
@@ -88,60 +93,77 @@
       padding: 8px 16px;
       border-radius: 6px;
       font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    header .account-button:hover {
+      background: #c6923d;
     }
 
     .main {
       margin-left: 120px;
-      padding: 100px 20px 20px 20px;
+      padding: 100px 20px 40px 20px;
     }
 
     .banner {
       width: 100%;
-      height: 180px;
+      height: 200px;
       border-radius: 12px;
       margin-bottom: 20px;
       position: relative;
       overflow: hidden;
       box-shadow: 0 0 10px rgba(0,0,0,0.4);
+      animation: fadeIn 1s ease;
     }
 
     .banner img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      position: absolute;
-      top: 0;
-      left: 0;
-      transition: opacity 1s ease-in-out;
-      opacity: 0;
     }
 
-    .banner img.active {
-      opacity: 1;
+    .menu-category {
+      margin-top: 30px;
+    }
+
+    .menu-category h2 {
+      margin-bottom: 15px;
+      font-size: 1.4em;
+      border-left: 6px solid #d4a253;
+      padding-left: 10px;
     }
 
     .menu-items {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
+      transition: all 0.5s ease;
     }
 
     .item {
       background-color: #3b271a;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 0 6px rgba(0,0,0,0.6);
       cursor: pointer;
-      transition: transform 0.2s ease;
+      transition: transform 0.3s ease, opacity 0.5s ease;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .item.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .item:hover {
-      transform: scale(1.02);
+      transform: scale(1.05);
     }
 
     .item img {
       width: 100%;
-      height: 130px;
+      height: 150px;
       object-fit: cover;
     }
 
@@ -166,41 +188,26 @@
 
     .content-section {
       display: none;
+      opacity: 0;
+      transition: opacity 0.6s ease;
     }
 
     .content-section.active {
       display: block;
+      opacity: 1;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      nav { width: 90px; }
+      header { left: 90px; }
+      .main { margin-left: 90px; padding: 90px 15px; }
     }
   </style>
-  <script>
-    function showSection(id) {
-      document.querySelectorAll('.content-section').forEach(section => {
-        section.classList.remove('active');
-      });
-      const sectionToShow = document.getElementById(id);
-      sectionToShow.classList.add('active');
-
-      document.querySelectorAll('nav a').forEach(link => {
-        link.classList.remove('active');
-      });
-      document.querySelectorAll('nav a').forEach(link => {
-        const text = link.textContent.toLowerCase();
-        if (text.includes(id)) link.classList.add('active');
-      });
-
-      if (id === 'cardapio') {
-        fetch('cardapio.html')
-          .then(res => res.text())
-          .then(html => {
-            sectionToShow.innerHTML = html;
-          });
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      showSection('inicio');
-    });
-  </script>
 </head>
 <body>
   <nav>
@@ -208,7 +215,6 @@
     <a href="#" onclick="showSection('cardapio')">🍽️ Cardápio</a>
     <a href="#" onclick="showSection('ofertas')">🔥 Ofertas</a>
     <a href="#" onclick="showSection('sobre')">📍 Sobre</a>
-    <a href="#" onclick="showSection('pontos')">📊 Pontos</a>
     <a href="#" onclick="showSection('avalie')">⭐ Avalie</a>
   </nav>
 
@@ -222,60 +228,87 @@
   </header>
 
   <div class="main">
-    <div class="banner">
-      <img class="active" src="https://source.unsplash.com/1280x250/?restaurant,interior" alt="Banner 1">
-    </div>
+    <!-- Tela inicial com banner -->
     <div id="inicio" class="content-section active">
-      <div class="menu-items">
-        <div class="item">
-          <img src="https://source.unsplash.com/300x200/?burger" alt="Papa Green">
-          <div class="info">
-            <h3>Papa Green</h3>
-            <p>R$ 22,90</p>
-            <div class="stars">⭐⭐⭐⭐☆</div>
-          </div>
+      <div class="banner">
+        <img src="https://source.unsplash.com/1280x300/?restaurant" alt="Banner Principal">
+      </div>
+      <h2>Bem-vindo ao nosso Cardápio</h2>
+      <p>Explore nossas opções deliciosas!</p>
+    </div>
+
+    <!-- Cardápio organizado em categorias -->
+    <div id="cardapio" class="content-section">
+      <div class="menu-category">
+        <h2>🍔 Lanches</h2>
+        <div class="menu-items">
+          <div class="item"><img src="https://source.unsplash.com/400x300/?burger" alt=""><div class="info"><h3>X-Burger</h3><p>R$ 18,90</p><div class="stars">⭐⭐⭐⭐</div></div></div>
+          <div class="item"><img src="https://source.unsplash.com/400x300/?pizza" alt=""><div class="info"><h3>Pizza Calabresa</h3><p>R$ 32,00</p><div class="stars">⭐⭐⭐⭐⭐</div></div></div>
+          <div class="item"><img src="https://source.unsplash.com/400x300/?sandwich" alt=""><div class="info"><h3>Sanduíche Natural</h3><p>R$ 14,90</p><div class="stars">⭐⭐⭐</div></div></div>
         </div>
-        <div class="item">
-          <img src="https://source.unsplash.com/300x200/?salmon" alt="Salmão do Papa">
-          <div class="info">
-            <h3>Salmão do Papa</h3>
-            <p>R$ 22,90</p>
-            <div class="stars">⭐⭐⭐⭐⭐</div>
-          </div>
+      </div>
+
+      <div class="menu-category">
+        <h2>🍝 Massas</h2>
+        <div class="menu-items">
+          <div class="item"><img src="https://source.unsplash.com/400x300/?pasta" alt=""><div class="info"><h3>Espaguete ao Sugo</h3><p>R$ 24,00</p><div class="stars">⭐⭐⭐⭐</div></div></div>
+          <div class="item"><img src="https://source.unsplash.com/400x300/?lasagna" alt=""><div class="info"><h3>Lasanha Bolonhesa</h3><p>R$ 29,00</p><div class="stars">⭐⭐⭐⭐⭐</div></div></div>
         </div>
-        <div class="item">
-          <img src="https://source.unsplash.com/300x200/?dessert" alt="Grand Gateau">
-          <div class="info">
-            <h3>Grand Gateau</h3>
-            <p>R$ 22,90</p>
-            <div class="stars">⭐⭐⭐⭐☆</div>
-          </div>
+      </div>
+
+      <div class="menu-category">
+        <h2>🍰 Sobremesas</h2>
+        <div class="menu-items">
+          <div class="item"><img src="https://source.unsplash.com/400x300/?cake" alt=""><div class="info"><h3>Bolo de Chocolate</h3><p>R$ 12,00</p><div class="stars">⭐⭐⭐⭐</div></div></div>
+          <div class="item"><img src="https://source.unsplash.com/400x300/?icecream" alt=""><div class="info"><h3>Sorvete Artesanal</h3><p>R$ 10,00</p><div class="stars">⭐⭐⭐⭐⭐</div></div></div>
         </div>
-        <div class="item">
-          <img src="https://source.unsplash.com/300x200/?drink" alt="Caipirinha">
-          <div class="info">
-            <h3>Caipirinha</h3>
-            <p>R$ 14,00</p>
-            <div class="stars">⭐⭐⭐⭐☆</div>
-          </div>
+      </div>
+
+      <div class="menu-category">
+        <h2>🥤 Bebidas</h2>
+        <div class="menu-items">
+          <div class="item"><img src="https://source.unsplash.com/400x300/?juice" alt=""><div class="info"><h3>Suco Natural</h3><p>R$ 8,00</p><div class="stars">⭐⭐⭐⭐</div></div></div>
+          <div class="item"><img src="https://source.unsplash.com/400x300/?coffee" alt=""><div class="info"><h3>Café Expresso</h3><p>R$ 6,00</p><div class="stars">⭐⭐⭐⭐⭐</div></div></div>
         </div>
       </div>
     </div>
-    <div id="cardapio" class="content-section">
-      <p>Conteúdo do cardápio será carregado aqui...</p>
-    </div>
+
     <div id="ofertas" class="content-section">
-      <p>Ofertas disponíveis</p>
+      <h2>Ofertas da Semana</h2>
+      <p>Confira nossos descontos especiais!</p>
     </div>
+
     <div id="sobre" class="content-section">
-      <p>Informações sobre o restaurante</p>
+      <h2>Sobre Nós</h2>
+      <p>Somos apaixonados por comida de qualidade!</p>
     </div>
-    <div id="pontos" class="content-section">
-      <p>Programa de pontos</p>
-    </div>
+
     <div id="avalie" class="content-section">
-      <p>Área para avaliações</p>
+      <h2>Deixe sua Avaliação</h2>
+      <p>Conte-nos sua experiência!</p>
     </div>
   </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      const sectionToShow = document.getElementById(id);
+      sectionToShow.classList.add('active');
+
+      document.querySelectorAll('nav a').forEach(link => {
+        link.classList.remove('active');
+      });
+      document.querySelector(`nav a[onclick="showSection('${id}')"]`).classList.add('active');
+
+      // Animar entrada dos itens do cardápio
+      if (id === 'cardapio') {
+        document.querySelectorAll('.item').forEach((el, index) => {
+          setTimeout(() => el.classList.add('show'), index * 150);
+        });
+      }
+    }
+  </script>
 </body>
 </html>
