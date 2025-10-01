@@ -110,24 +110,6 @@
       background: #c6923d;
     }
 
-    /* Botão instalar */
-    #installButton {
-      display: none;
-      margin-left: 10px;
-      background: #4CAF50;
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    #installButton:hover {
-      background: #45a049;
-    }
-
     .main {
       margin-left: 120px;
       padding: 100px 20px 40px 20px;
@@ -277,7 +259,6 @@
       <input type="text" placeholder="Buscar...">
     </div>
     <button class="account-button">MINHA CONTA</button>
-    <button id="installButton">📲 Baixar</button>
   </header>
 
   <div class="main">
@@ -357,14 +338,11 @@
       }
     }
 
-    // Scrollspy categorias + PWA Install
+    // Scrollspy categorias
     document.addEventListener("DOMContentLoaded", () => {
       const categoryLinks = document.querySelectorAll('.category-nav a');
       const sections = document.querySelectorAll('.menu-category');
-      const installButton = document.getElementById('installButton');
-      let deferredPrompt;
 
-      // Scroll suave
       categoryLinks.forEach(link => {
         link.addEventListener('click', e => {
           e.preventDefault();
@@ -373,7 +351,6 @@
         });
       });
 
-      // Scrollspy
       window.addEventListener('scroll', () => {
         let current = "";
         sections.forEach(sec => {
@@ -389,34 +366,7 @@
         });
       });
 
-      // Detecta se app não está instalado
-      const isInStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-      if (!isInStandalone) {
-        installButton.style.display = 'inline-block';
-      }
-
-      // Evento Chrome para instalar PWA
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installButton.style.display = 'inline-block';
-      });
-
-      installButton.addEventListener('click', () => {
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          deferredPrompt.userChoice.then((choice) => {
-            if (choice.outcome === 'accepted') {
-              console.log('Usuário aceitou instalar');
-            }
-            deferredPrompt = null;
-          });
-        } else {
-          alert("Para instalar, use 'Adicionar à Tela Inicial' do navegador.");
-        }
-      });
-
-      // Service Worker
+      // PWA Service Worker
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("service-worker.js")
           .then(() => console.log("Service Worker registrado"));
