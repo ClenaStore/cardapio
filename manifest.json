@@ -1,7 +1,7 @@
 {
   "name": "Cardápio Digital",
   "short_name": "Cardápio",
-  "start_url": "index.html",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#1f150f",
   "theme_color": "#2b1d14",
