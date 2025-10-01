@@ -123,6 +123,31 @@
       object-fit: cover;
     }
 
+    /* Barra de categorias em linha */
+    .category-nav {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding: 10px 0;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #d4a253;
+    }
+
+    .category-nav a {
+      color: #f5f5f5;
+      background: #3b271a;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.3s;
+    }
+
+    .category-nav a:hover {
+      background: #d4a253;
+      color: #2b1d14;
+    }
+
     .menu-category {
       margin-top: 30px;
     }
@@ -228,7 +253,7 @@
   </header>
 
   <div class="main">
-    <!-- Tela inicial com banner -->
+    <!-- Tela inicial -->
     <div id="inicio" class="content-section active">
       <div class="banner">
         <img src="https://source.unsplash.com/1280x300/?restaurant" alt="Banner Principal">
@@ -237,9 +262,17 @@
       <p>Explore nossas opções deliciosas!</p>
     </div>
 
-    <!-- Cardápio organizado em categorias -->
+    <!-- Cardápio -->
     <div id="cardapio" class="content-section">
-      <div class="menu-category">
+      <!-- Categorias em linha -->
+      <div class="category-nav">
+        <a href="#cat-lanches">🍔 Lanches</a>
+        <a href="#cat-massas">🍝 Massas</a>
+        <a href="#cat-sobremesas">🍰 Sobremesas</a>
+        <a href="#cat-bebidas">🥤 Bebidas</a>
+      </div>
+
+      <div id="cat-lanches" class="menu-category">
         <h2>🍔 Lanches</h2>
         <div class="menu-items">
           <div class="item"><img src="https://source.unsplash.com/400x300/?burger" alt=""><div class="info"><h3>X-Burger</h3><p>R$ 18,90</p><div class="stars">⭐⭐⭐⭐</div></div></div>
@@ -248,7 +281,7 @@
         </div>
       </div>
 
-      <div class="menu-category">
+      <div id="cat-massas" class="menu-category">
         <h2>🍝 Massas</h2>
         <div class="menu-items">
           <div class="item"><img src="https://source.unsplash.com/400x300/?pasta" alt=""><div class="info"><h3>Espaguete ao Sugo</h3><p>R$ 24,00</p><div class="stars">⭐⭐⭐⭐</div></div></div>
@@ -256,7 +289,7 @@
         </div>
       </div>
 
-      <div class="menu-category">
+      <div id="cat-sobremesas" class="menu-category">
         <h2>🍰 Sobremesas</h2>
         <div class="menu-items">
           <div class="item"><img src="https://source.unsplash.com/400x300/?cake" alt=""><div class="info"><h3>Bolo de Chocolate</h3><p>R$ 12,00</p><div class="stars">⭐⭐⭐⭐</div></div></div>
@@ -264,7 +297,7 @@
         </div>
       </div>
 
-      <div class="menu-category">
+      <div id="cat-bebidas" class="menu-category">
         <h2>🥤 Bebidas</h2>
         <div class="menu-items">
           <div class="item"><img src="https://source.unsplash.com/400x300/?juice" alt=""><div class="info"><h3>Suco Natural</h3><p>R$ 8,00</p><div class="stars">⭐⭐⭐⭐</div></div></div>
@@ -302,13 +335,29 @@
       });
       document.querySelector(`nav a[onclick="showSection('${id}')"]`).classList.add('active');
 
-      // Animar entrada dos itens do cardápio
+      // Animar entrada dos itens sempre que abrir o cardápio
       if (id === 'cardapio') {
-        document.querySelectorAll('.item').forEach((el, index) => {
-          setTimeout(() => el.classList.add('show'), index * 150);
+        document.querySelectorAll('.item').forEach(el => {
+          el.classList.remove('show');
         });
+        setTimeout(() => {
+          document.querySelectorAll('.item').forEach((el, index) => {
+            setTimeout(() => el.classList.add('show'), index * 120);
+          });
+        }, 100);
       }
     }
+
+    // Scroll suave para categorias
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll('.category-nav a').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const target = document.querySelector(link.getAttribute('href'));
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    });
   </script>
 </body>
 </html>
