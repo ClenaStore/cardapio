@@ -132,6 +132,7 @@
       object-fit: cover;
     }
 
+    /* Barra de categorias fixa */
     .category-nav {
       display: flex;
       gap: 15px;
@@ -140,7 +141,7 @@
       margin-bottom: 20px;
       border-bottom: 2px solid #d4a253;
       position: sticky;
-      top: 70px;
+      top: 70px; /* abaixo do header */
       background: #1f150f;
       z-index: 900;
     }
@@ -159,6 +160,11 @@
       background: #d4a253;
       color: #2b1d14;
       font-weight: bold;
+    }
+
+    .category-nav a:hover {
+      background: #d4a253;
+      color: #2b1d14;
     }
 
     .menu-category {
@@ -261,6 +267,7 @@
   </header>
 
   <div class="main">
+    <!-- Início -->
     <div id="inicio" class="content-section active">
       <div class="banner">
         <img src="https://source.unsplash.com/1280x300/?restaurant" alt="Banner Principal">
@@ -269,7 +276,9 @@
       <p>Explore nossas opções deliciosas!</p>
     </div>
 
+    <!-- Cardápio -->
     <div id="cardapio" class="content-section">
+      <!-- Barra fixa -->
       <div class="category-nav">
         <a href="#cat-lanches">🍔 Lanches</a>
         <a href="#cat-massas">🍝 Massas</a>
@@ -281,8 +290,52 @@
         <h2>🍔 Lanches</h2>
         <div class="menu-items">
           <div class="item"><img src="https://source.unsplash.com/400x300/?burger"><div class="info"><h3>X-Burger</h3><p>R$ 18,90</p><div class="stars">⭐⭐⭐⭐</div></div></div>
+          <div class="item"><img src="https://source.unsplash.com/400x300/?pizza"><div class="info"><h3>Pizza Calabresa</h3><p>R$ 32,00</p><div class="stars">⭐⭐⭐⭐⭐</div></div></div>
+          <div class="item"><img src="https://source.unsplash.com/400x300/?sandwich"><div class="info"><h3>Sanduíche Natural</h3><p>R$ 14,90</p><div class="stars">⭐⭐⭐</div></div></div>
         </div>
       </div>
+
+      <div id="cat-massas" class="menu-category">
+        <h2>🍝 Massas</h2>
+        <div class="menu-items">
+          <div class="item"><img src="https://source.unsplash.com/400x300/?pasta"><div class="info"><h3>Espaguete ao Sugo</h3><p>R$ 24,00</p><div class="stars">⭐⭐⭐⭐</div></div></div>
+          <div class="item"><img src="https://source.unsplash.com/400x300/?lasagna"><div class="info"><h3>Lasanha Bolonhesa</h3><p>R$ 29,00</p><div class="stars">⭐⭐⭐⭐⭐</div></div></div>
+        </div>
+      </div>
+
+      <div id="cat-sobremesas" class="menu-category">
+        <h2>🍰 Sobremesas</h2>
+        <div class="menu-items">
+          <div class="item"><img src="https://source.unsplash.com/400x300/?cake"><div class="info"><h3>Bolo de Chocolate</h3><p>R$ 12,00</p><div class="stars">⭐⭐⭐⭐</div></div></div>
+          <div class="item"><img src="https://source.unsplash.com/400x300/?icecream"><div class="info"><h3>Sorvete Artesanal</h3><p>R$ 10,00</p><div class="stars">⭐⭐⭐⭐⭐</div></div></div>
+        </div>
+      </div>
+
+      <div id="cat-bebidas" class="menu-category">
+        <h2>🥤 Bebidas</h2>
+        <div class="menu-items">
+          <div class="item"><img src="https://source.unsplash.com/400x300/?juice"><div class="info"><h3>Suco Natural</h3><p>R$ 8,00</p><div class="stars">⭐⭐⭐⭐</div></div></div>
+          <div class="item"><img src="https://source.unsplash.com/400x300/?coffee"><div class="info"><h3>Café Expresso</h3><p>R$ 6,00</p><div class="stars">⭐⭐⭐⭐⭐</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ofertas -->
+    <div id="ofertas" class="content-section">
+      <h2>🔥 Ofertas</h2>
+      <p>Ofertas disponíveis em breve.</p>
+    </div>
+
+    <!-- Sobre -->
+    <div id="sobre" class="content-section">
+      <h2>📍 Sobre</h2>
+      <p>Informações sobre o restaurante.</p>
+    </div>
+
+    <!-- Avalie -->
+    <div id="avalie" class="content-section">
+      <h2>⭐ Avalie</h2>
+      <p>Área para avaliações.</p>
     </div>
   </div>
 
@@ -308,11 +361,40 @@
       }
     }
 
-    // PWA Service Worker
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/service-worker.js")
-        .then(() => console.log("✅ Service Worker registrado"));
-    }
+    // Scrollspy categorias
+    document.addEventListener("DOMContentLoaded", () => {
+      const categoryLinks = document.querySelectorAll('.category-nav a');
+      const sections = document.querySelectorAll('.menu-category');
+
+      categoryLinks.forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const target = document.querySelector(link.getAttribute('href'));
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      window.addEventListener('scroll', () => {
+        let current = "";
+        sections.forEach(sec => {
+          const secTop = sec.offsetTop - 120;
+          if (pageYOffset >= secTop) current = sec.getAttribute("id");
+        });
+
+        categoryLinks.forEach(link => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === "#" + current) {
+            link.classList.add("active");
+          }
+        });
+      });
+
+      // PWA Service Worker
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/service-worker.js")
+          .then(() => console.log("✅ Service Worker registrado"));
+      }
+    });
   </script>
 </body>
 </html>
